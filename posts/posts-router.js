@@ -49,7 +49,7 @@ router.get('/:id', (req, res) => {
 router.post('/:id/comments', (req, res) => {
   Posts.insertComment(req.body)
     .then((post) => {
-      console.log(post);
+      res.status(200).json(post);
     })
     .catch((err) => {
       res.status(500).json({
@@ -70,10 +70,25 @@ router.get('/:id/comments', (req, res) => {
     });
 });
 
+router.put('/:id', (req, res) => {
+  const id = req.params.id;
+  const content = req.body;
+
+  Posts.update(id, content)
+    .then((post) => {
+      res.status(202).json(post);
+    })
+    .catch((err) => {
+      res.status(500).json({
+        message: err.message,
+      });
+    });
+});
+
 router.delete('/:id', (req, res) => {
   Posts.remove(req.params.id)
     .then((post) => {
-      res.status(204);
+      res.status(204).json(post);
     })
     .catch((err) => {
       res
